@@ -1,33 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:tweet_memo/domain/model/vo/datetime.dart';
+
+import 'domain/model/todo_item.dart';
 
 void main() {
   runApp(const TodoApp());
-}
-
-class TodoItem {
-  final String text;
-  final DateTime createdAt;
-
-  TodoItem(this.text, this.createdAt);
-
-  String getRelativeTime() {
-    Duration difference = DateTime.now().difference(createdAt);
-
-    if (difference.inDays > 365) {
-      return '${(difference.inDays / 365).floor()}年前';
-    } else if (difference.inDays > 30) {
-      return '${(difference.inDays / 30).floor()}ヶ月前';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}日前';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}時間前';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}分前';
-    } else {
-      return 'たった今';
-    }
-  }
 }
 
 class TodoApp extends StatelessWidget {
@@ -59,7 +36,7 @@ class _TodoListState extends State<TodoList> {
     setState(() {
       String todoText = _controller.text;
       if (todoText.isNotEmpty) {
-        _todos.insert(0, TodoItem(todoText, DateTime.now()));
+        _todos.insert(0, TodoItem(todoText, DateTimeValue(DateTime.now())));
         _controller.clear();
       }
     });
@@ -105,7 +82,7 @@ class _TodoListState extends State<TodoList> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(_todos[index].text),
-                  subtitle: Text(_todos[index].getRelativeTime()),
+                  subtitle: Text(_todos[index].createdAt.getRelativeTime()),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () => _removeTodo(index),

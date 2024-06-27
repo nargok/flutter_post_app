@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 void main() {
-  runApp(TodoApp());
+  runApp(const TodoApp());
 }
 
 class TodoItem {
@@ -13,6 +13,8 @@ class TodoItem {
 }
 
 class TodoApp extends StatelessWidget {
+  const TodoApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,18 +22,20 @@ class TodoApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: TodoList());
+        home: const TodoList());
   }
 }
 
 class TodoList extends StatefulWidget {
+  const TodoList({super.key});
+
   @override
   _TodoListState createState() => _TodoListState();
 }
 
 class _TodoListState extends State<TodoList> {
-  List<TodoItem> _todos = [];
-  TextEditingController _controller = TextEditingController();
+  final List<TodoItem> _todos = [];
+  final TextEditingController _controller = TextEditingController();
 
   void _addTodo() {
     setState(() {
@@ -71,7 +75,7 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todo List'),
+        title: const Text('Todo List'),
       ),
       body: Column(
         children: [
@@ -82,14 +86,14 @@ class _TodoListState extends State<TodoList> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Enter a todo item',
                     ),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: _addTodo,
-                  child: Text('Add'),
+                  child: const Text('Add'),
                 ),
               ],
             ),
@@ -102,7 +106,7 @@ class _TodoListState extends State<TodoList> {
                   title: Text(_todos[index].text),
                   subtitle: Text(_getRelativeTime(_todos[index].createdAt)),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => _removeTodo(index),
                   ),
                 );

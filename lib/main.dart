@@ -10,6 +10,24 @@ class TodoItem {
   final DateTime createdAt;
 
   TodoItem(this.text, this.createdAt);
+
+  String getRelativeTime() {
+    Duration difference = DateTime.now().difference(createdAt);
+
+    if (difference.inDays > 365) {
+      return '${(difference.inDays / 365).floor()}年前';
+    } else if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()}ヶ月前';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays}日前';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}時間前';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}分前';
+    } else {
+      return 'たった今';
+    }
+  }
 }
 
 class TodoApp extends StatelessWidget {
@@ -53,23 +71,6 @@ class _TodoListState extends State<TodoList> {
     });
   }
 
-  String _getRelativeTime(DateTime dateTime) {
-    Duration difference = DateTime.now().difference(dateTime);
-
-    if (difference.inDays > 365) {
-      return '${(difference.inDays / 365).floor()}年前';
-    } else if (difference.inDays > 30) {
-      return '${(difference.inDays / 30).floor()}ヶ月前';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}日前';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}時間前';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}分前';
-    } else {
-      return 'たった今';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +105,7 @@ class _TodoListState extends State<TodoList> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(_todos[index].text),
-                  subtitle: Text(_getRelativeTime(_todos[index].createdAt)),
+                  subtitle: Text(_todos[index].getRelativeTime()),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () => _removeTodo(index),

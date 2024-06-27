@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(TodoApp());
+}
+
+class TodoItem {
+  final String text;
+  final DateTime createdAt;
+
+  TodoItem(this.text, this.createdAt);
 }
 
 class TodoApp extends StatelessWidget {
@@ -22,14 +30,14 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  List<String> _todos = [];
+  List<TodoItem> _todos = [];
   TextEditingController _controller = TextEditingController();
 
   void _addTodo() {
     setState(() {
-      String todo = _controller.text;
-      if (todo.isNotEmpty) {
-        _todos.insert(0, todo);
+      String todoText = _controller.text;
+      if (todoText.isNotEmpty) {
+        _todos.insert(0, TodoItem(todoText, DateTime.now()));
         _controller.clear();
       }
     });
@@ -73,7 +81,10 @@ class _TodoListState extends State<TodoList> {
               itemCount: _todos.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_todos[index]),
+                  title: Text(_todos[index].text),
+                  subtitle: Text(
+                    DateFormat('yyyy-mm-dd HH:mm:ss').format(_todos[index].createdAt)
+                  ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () => _removeTodo(index),

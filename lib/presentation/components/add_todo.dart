@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tweet_memo/application/providers/todo_provider.dart';
+import 'package:tweet_memo/main.dart';
 
 class AddTodoWidget extends ConsumerWidget {
   final TextEditingController _controller = TextEditingController();
@@ -23,7 +23,7 @@ class AddTodoWidget extends ConsumerWidget {
           ),
           ElevatedButton(
             onPressed: () =>
-                ref.read(todoProvider.notifier).addTodo(_controller.text),
+                ref.read(postNotifierProvider.notifier).addTodo(_controller.text),
             child: const Text('Add'),
           ),
         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tweet_memo/application/providers/todo_provider.dart';
+import 'package:tweet_memo/main.dart';
 import 'package:tweet_memo/presentation/components/add_todo.dart';
 
 class TodoList extends ConsumerWidget {
@@ -8,27 +8,28 @@ class TodoList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(todoProvider);
+    final posts = ref.watch(postNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo List'),
+        title: const Text('Post List'),
       ),
       body: Column(
         children: [
           AddTodoWidget(),
           Expanded(
             child: ListView.builder(
-              itemCount: todos.length,
+              itemCount: posts.length,
               itemBuilder: (context, index) {
-                final todo = todos[index];
+                final post = posts[index];
                 return ListTile(
-                  title: Text(todo.text),
-                  subtitle: Text(todo.createdAt.getRelativeTime()),
+                  title: Text(post.text),
+                  subtitle: Text(post.createdAt.getRelativeTime()),
                   trailing: IconButton(
                       icon: const Icon(Icons.delete),
-                      onPressed: () =>
-                          ref.read(todoProvider.notifier).removeTodo(todo.id)),
+                      onPressed: () => ref
+                          .read(postNotifierProvider.notifier)
+                          .removeTodo(post.id!)),
                 );
               },
             ),

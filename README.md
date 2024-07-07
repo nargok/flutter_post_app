@@ -1,4 +1,4 @@
-# tweet_memo
+# Flutter Post App
 
 A new Flutter project.
 
